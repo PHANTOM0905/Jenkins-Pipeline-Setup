@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Addition App</title>
+</head>
+<body>
+    <h1>Simple Addition Calculator</h1>
+    <form onsubmit="calculateSum(event)">
+        <input type="number" id="num1" placeholder="Enter first number" required />
+        <input type="number" id="num2" placeholder="Enter second number" required />
+        <button type="submit">Add</button>
+    </form>
+    <h2 id="result"></h2>
+
+    <script>
+        function calculateSum(event) {
+            event.preventDefault();
+            const a = document.getElementById('num1').value;
+            const b = document.getElementById('num2').value;
+
+            fetch(`http://localhost:3000/?a=${a}&b=${b}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('result').innerText = `Result: ${data.result}`;
+                })
+                .catch(err => console.error(err));
+        }
+    </script>
+</body>
+</html>
