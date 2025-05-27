@@ -5,7 +5,6 @@ const path = require('path');
 
 const server = http.createServer((req, res) => {
     if (req.url === '/' || req.url === '/index.html') {
-        // Serve index.html
         const filePath = path.join(__dirname, 'index.html');
         fs.readFile(filePath, (err, data) => {
             if (err) {
@@ -17,7 +16,6 @@ const server = http.createServer((req, res) => {
             }
         });
     } else {
-        // Handle API request
         const query = url.parse(req.url, true).query;
         const a = parseFloat(query.a) || 0;
         const b = parseFloat(query.b) || 0;
@@ -30,4 +28,12 @@ const server = http.createServer((req, res) => {
 
 server.listen(3000, () => {
     console.log('Server running on http://localhost:3000');
+
+    // Automatically shut down after 5 seconds for CI/CD
+    setTimeout(() => {
+        server.close(() => {
+            console.log('Server closed');
+            process.exit(0);
+        });
+    }, 5000);
 });
